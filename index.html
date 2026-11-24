@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Complyable — Live Demo</title>
+  <meta name="description" content="Complyable Demo: DSGVO-Redaktion für Lebensläufe — vollständig in Ihrem Browser." />
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Vendored parsers (no network at runtime, no build step) -->
+  <script src="vendor/pdf.min.js"></script>
+  <script src="vendor/mammoth.browser.min.js"></script>
+</head>
+<body>
+  <noscript>
+    <p style="padding:16px;background:#fff5f5;border-bottom:1px solid #ff8182;">
+      Diese Demo benötigt JavaScript, da die Verarbeitung vollständig in Ihrem
+      Browser stattfindet.
+    </p>
+  </noscript>
+  <header class="topbar">
+    <div class="brand">Comply<span>able</span> <span class="pill">Demo</span></div>
+    <div class="badge" title="Die Datei wird ausschließlich lokal in Ihrem Browser verarbeitet.">
+      🔒 Verarbeitung nur in Ihrem Browser — keine Uploads
+    </div>
+  </header>
+
+  <main>
+    <section id="intro" class="intro">
+      <h1>Lebensläufe redigieren, ohne dass Daten Ihr Gerät verlassen.</h1>
+      <p class="lede">
+        Ziehen Sie eine Datei (PDF, DOCX oder TXT, max. 5 Seiten) in das Feld unten.
+        Complyable erkennt personenbezogene Daten und geschlechtsspezifische
+        Berufsbezeichnungen — vollständig offline in Ihrem Browser.
+      </p>
+    </section>
+
+    <!-- Dropzone -->
+    <section id="dropzone" class="dropzone" tabindex="0" aria-label="Datei hier ablegen">
+      <input id="fileInput" type="file" accept=".pdf,.docx,.txt" hidden />
+      <div class="dz-inner">
+        <div class="dz-icon">📄</div>
+        <p><strong>Datei hierher ziehen</strong> oder <button id="browseBtn" class="linkbtn" type="button">durchsuchen</button></p>
+        <p class="hint">PDF · DOCX · TXT &nbsp;•&nbsp; maximal 5 Seiten &nbsp;•&nbsp; bleibt lokal</p>
+        <button id="sampleBtn" class="ghostbtn" type="button">Beispiel-Lebenslauf laden</button>
+      </div>
+    </section>
+
+    <div id="banner" class="banner" hidden></div>
+
+    <!-- Workspace -->
+    <section id="workspace" class="workspace" hidden>
+      <div class="doc-pane">
+        <div class="pane-head">
+          <span id="fileName" class="filename"></span>
+          <span id="docMeta" class="meta"></span>
+        </div>
+        <div id="doc" class="doc" contenteditable="false" spellcheck="false"></div>
+      </div>
+
+      <aside class="side-pane">
+        <div class="stat-grid">
+          <div class="stat"><span id="statTotal" class="num">0</span><span class="lbl">Funde</span></div>
+          <div class="stat redact"><span id="statRedact" class="num">0</span><span class="lbl">Redigiert</span></div>
+          <div class="stat exclude"><span id="statExclude" class="num">0</span><span class="lbl">Ausgenommen</span></div>
+          <div class="stat gender"><span id="statGender" class="num">0</span><span class="lbl">Gender</span></div>
+        </div>
+
+        <div class="actions">
+          <button id="redactAll" class="ghostbtn" type="button">Alle redigieren</button>
+          <button id="excludeAll" class="ghostbtn" type="button">Alle ausnehmen</button>
+          <button id="downloadBtn" class="primary" type="button">Redigierte Datei herunterladen</button>
+          <button id="copyBtn" class="ghostbtn" type="button">In Zwischenablage kopieren</button>
+          <button id="resetBtn" class="linkbtn" type="button">Neue Datei</button>
+        </div>
+
+        <div class="legend">
+          <span><mark class="pii">PII</mark> personenbezogen</span>
+          <span><mark class="gender">Gender</mark> neutralisierbar</span>
+          <span><mark class="excluded">ausgenommen</mark></span>
+        </div>
+
+        <div class="list-head">Erkannte Begriffe <span class="hint">(Klick = umschalten)</span></div>
+        <ul id="findingList" class="finding-list"></ul>
+      </aside>
+    </section>
+
+    <footer class="foot">
+      Demo-Version · Tier 1 (Regex) + Tier 3 (Gender-Lexikon) laufen vollständig im Browser.
+      Eine probabilistische NER-Erkennung (Tier 2) folgt.
+    </footer>
+  </main>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
