@@ -1,5 +1,9 @@
 # Complyable — Web Demo (client-side)
 
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://doctype-melvin.github.io/comp-demo/)
+
+**Live demo:** https://doctype-melvin.github.io/comp-demo/
+
 A fully **client-side** showcase of Complyable. Drop a CV (PDF/DOCX/TXT, max 5
 pages) and it detects PII + gendered job titles **entirely in the browser** —
 nothing is uploaded, nothing is stored. Hosts for **$0** on any static host.
@@ -68,6 +72,8 @@ The folder is plain static files. Any of these work at no cost:
 - **Cloudflare Pages** — connect the repo, set the root directory to the repo
   root, no build command.
 - **GitHub Pages** — *Settings → Pages → Deploy from a branch*, `main` / `/root`.
+  This is how the live demo above is deployed; pushes to `main` redeploy
+  automatically.
 - **Netlify / Vercel** — drag-and-drop the folder (static).
 
 ## Structure
@@ -110,3 +116,7 @@ PY
   complete than the desktop app's spaCy `de_core_news_md` NER. A browser NER
   model is the planned Phase 1 upgrade; Tier 1 + Tier 3 already carry most of
   the detection.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Copyright (c) 2026 Melvin Speckamp.
