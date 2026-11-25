@@ -1,8 +1,10 @@
 # Complyable — Web Demo (client-side)
 
-[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://doctype-melvin.github.io/comp-demo/)
+[![Live demo](https://img.shields.io/badge/demo-live-brightgreen)](https://demo.complyable.de/)
 
-**Live demo:** https://doctype-melvin.github.io/comp-demo/
+**Live demo:** https://demo.complyable.de/
+
+Mirror: https://doctype-melvin.github.io/comp-demo/
 
 A fully **client-side** showcase of Complyable. Drop a CV (PDF/DOCX/TXT, max 5
 pages) and it detects PII + gendered job titles **entirely in the browser** —
@@ -69,12 +71,13 @@ is nothing else to initialize.
 
 The folder is plain static files. Any of these work at no cost:
 
+- **Netlify** — connect the repo; `netlify.toml` sets the publish directory to
+  the repo root and there is no build step. This is how the live demo above is
+  deployed (`demo.complyable.de`); pushes to `main` redeploy automatically.
+- **GitHub Pages** — *Settings → Pages → Deploy from a branch*, `main` / `/root`.
+  Also enabled as a mirror; pushes to `main` redeploy automatically.
 - **Cloudflare Pages** — connect the repo, set the root directory to the repo
   root, no build command.
-- **GitHub Pages** — *Settings → Pages → Deploy from a branch*, `main` / `/root`.
-  This is how the live demo above is deployed; pushes to `main` redeploy
-  automatically.
-- **Netlify / Vercel** — drag-and-drop the folder (static).
 
 ## Structure
 
