@@ -39,6 +39,15 @@ function banner(msg, type = "info") {
 }
 function clearBanner() { el.banner.hidden = true; }
 
+// ── Analytics (optional) ───────────────────────────────────────────────────
+// No-op unless a privacy-friendly analytics script (e.g. Umami) is loaded.
+// Only aggregate events are sent — never document text, file names or PII.
+function track(event, data) {
+  if (window.umami && typeof window.umami.track === "function") {
+    window.umami.track(event, data);
+  }
+}
+
 // ── Loading ────────────────────────────────────────────────────────────────
 async function handleFile(file) {
   clearBanner();
@@ -47,16 +56,24 @@ async function handleFile(file) {
     const parsed = await parseFile(file);
     if (parsed.pages > PAGE_LIMIT) {
       banner(`Dieses Dokument hat ${parsed.pages} Seiten. Die Demo verarbeitet maximal ${PAGE_LIMIT} Seiten.`, "error");
+      track("demo_file_rejected", { reason: "page_limit", pages: parsed.pages });
       return;
     }
     if (!parsed.text || parsed.text.length < 5) {
       banner("Kein Text erkannt. Bei gescannten PDFs ist derzeit kein Textlayer vorhanden.", "error");
+      track("demo_file_rejected", { reason: "no_text", kind: parsed.kind });
       return;
     }
     loadDocument(parsed.text, file.name, `${parsed.kind.toUpperCase()} · ${parsed.pages} Seite(n)`);
+    track("demo_file_processed", {
+      kind: parsed.kind,
+      pages: parsed.pages,
+      findings: state.findings.length,
+    });
   } catch (err) {
     console.error(err);
     banner("Datei konnte nicht gelesen werden: " + err.message, "error");
+    track("demo_file_error", { reason: "parse_error" });
   }
 }
 
@@ -181,6 +198,7 @@ function redactedText() {
 }
 
 el.downloadBtn.addEventListener("click", () => {
+  track("demo_download", { findings: state.findings.length });
   const blob = new Blob([redactedText()], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -195,6 +213,7 @@ el.downloadBtn.addEventListener("click", () => {
 el.copyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(redactedText());
+    track("demo_copy", { findings: state.findings.length });
     banner("Redigierter Text in die Zwischenablage kopiert.", "info");
   } catch {
     banner("Kopieren nicht möglich — bitte die Datei herunterladen.", "error");
@@ -262,4 +281,5 @@ el.sampleBtn.addEventListener("click", (e) => {
   e.stopPropagation();
   clearBanner();
   loadDocument(SAMPLE, "Beispiel-Lebenslauf.txt", "BEISPIEL · 1 Seite");
+  track("demo_sample_loaded", { findings: state.findings.length });
 });
